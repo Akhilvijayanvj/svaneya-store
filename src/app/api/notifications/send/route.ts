@@ -13,8 +13,16 @@ const supabase = createClient(
 // Initialize Firebase Admin if not already initialized
 if (getApps().length === 0) {
   try {
-    const serviceAccountPath = path.join(process.cwd(), 'firebase-admin.json');
-    const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
+    let serviceAccount;
+    // For Vercel production
+    if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
+      serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+    } else {
+      // For local development
+      const serviceAccountPath = path.join(process.cwd(), 'firebase-admin.json');
+      serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
+    }
+    
     initializeApp({
       credential: cert(serviceAccount)
     });
