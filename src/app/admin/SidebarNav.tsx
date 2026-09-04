@@ -50,7 +50,7 @@ export function SidebarNav() {
           <nav className="space-y-1">
             {group.items.map((link) => {
               const Icon = link.icon;
-              const isActive = link.exact 
+              const isActive = (link as any).exact 
                 ? pathname === link.href 
                 : pathname.startsWith(link.href);
 
