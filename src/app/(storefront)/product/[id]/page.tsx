@@ -87,7 +87,7 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
           <div className="pt-12 border-t border-slate-200">
             <h2 className="text-2xl font-heading tracking-tight mb-8 text-center">Specifications</h2>
             
-            <Accordion className="w-full" defaultValue="description">
+            <Accordion className="w-full" defaultValue={["description"]}>
               <AccordionItem value="certifications" className="border-b border-slate-200 py-2">
                 <AccordionTrigger className="text-sm tracking-widest uppercase hover:no-underline hover:text-slate-500 transition-colors">Certifications</AccordionTrigger>
                 <AccordionContent className="text-slate-600 leading-relaxed pt-2">

@@ -145,7 +145,7 @@ export default function AdminReviewsPage() {
             <form onSubmit={handleAddManualReview} className="space-y-4 py-4">
               <div className="space-y-2">
                 <Label>Product</Label>
-                <Select value={productId} onValueChange={setProductId} required>
+                <Select value={productId} onValueChange={(val: any) => setProductId(val)} required>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a product" />
                   </SelectTrigger>
@@ -162,7 +162,7 @@ export default function AdminReviewsPage() {
               </div>
               <div className="space-y-2">
                 <Label>Rating</Label>
-                <Select value={rating} onValueChange={setRating}>
+                <Select value={rating} onValueChange={(val: any) => setRating(val)}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>

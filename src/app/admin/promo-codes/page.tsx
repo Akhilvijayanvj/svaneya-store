@@ -118,8 +118,8 @@ export default function AdminPromoCodesPage() {
                 <div className="space-y-2">
                   <Label>Discount Type</Label>
                   <Select 
-                    value={formData.discount_type} 
-                    onValueChange={(val) => setFormData({...formData, discount_type: val})}
+                    value={formData.discount_type || ""} 
+                    onValueChange={(val: any) => setFormData({...formData, discount_type: val})}
                   >
                     <SelectTrigger>
                       <SelectValue />

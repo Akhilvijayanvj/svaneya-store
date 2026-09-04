@@ -124,7 +124,7 @@ export default function AdminSettingsPage() {
       
       <Card>
         <CardContent className="p-0">
-          <Accordion className="w-full" defaultValue="hero">
+          <Accordion className="w-full" defaultValue={["hero"]}>
             
             <AccordionItem value="hero" className="border-b px-6 py-2">
               <AccordionTrigger className="hover:no-underline">
