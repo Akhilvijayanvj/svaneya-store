@@ -23,6 +23,7 @@ export default function AddProductPage() {
     is_best_seller: false,
     is_new_arrival: false,
     is_special_edition: false,
+    is_archived: false,
     badge_text: '',
     badge_bg: '#0f172a',
     badge_text_color: '#ffffff'
@@ -98,6 +99,7 @@ export default function AddProductPage() {
           is_best_seller: formData.is_best_seller,
           is_new_arrival: formData.is_new_arrival,
           is_special_edition: formData.is_special_edition,
+          is_archived: formData.is_archived,
           badge_text: formData.badge_text || null,
           badge_bg: formData.badge_bg,
           badge_text_color: formData.badge_text_color
@@ -227,6 +229,20 @@ export default function AddProductPage() {
                 />
                 <label htmlFor="is_special_edition" className="text-sm font-medium leading-none">
                   Special Edition
+                </label>
+              </div>
+              
+              <div className="flex items-center space-x-2 pt-2 border-t mt-4">
+                <input 
+                  type="checkbox" 
+                  id="is_archived" 
+                  name="is_archived"
+                  className="h-4 w-4 rounded border-gray-300 text-slate-900 focus:ring-slate-900"
+                  checked={formData.is_archived}
+                  onChange={handleChange}
+                />
+                <label htmlFor="is_archived" className="text-sm font-medium leading-none text-red-600">
+                  Archive / Hide Product (Will not appear on storefront)
                 </label>
               </div>
             </div>

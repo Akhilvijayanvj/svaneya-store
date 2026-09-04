@@ -63,7 +63,7 @@ export function Navbar() {
           <Link href="/cart" className="relative text-slate-600 hover:text-black transition-colors">
             <ShoppingCart className="h-5 w-5 stroke-[1.5]" />
             {mounted && itemCount > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-black text-[10px] text-white font-medium">
+              <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[10px] text-white font-bold">
                 {itemCount}
               </span>
             )}

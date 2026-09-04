@@ -12,6 +12,7 @@ export default async function ProductsCatalogPage() {
   const { data: products } = await supabase
     .from('products')
     .select('*')
+    .eq('is_archived', false)
     .order('created_at', { ascending: false });
 
   return (

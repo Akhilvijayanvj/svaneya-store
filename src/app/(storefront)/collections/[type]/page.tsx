@@ -15,7 +15,7 @@ export default async function CollectionPage({ params, searchParams }: { params:
   const { data: { user } } = await supabaseServer.auth.getUser();
   const userEmail = user?.email;
 
-  let query = supabase.from('products').select('*').order('created_at', { ascending: false });
+  let query = supabase.from('products').select('*').eq('is_archived', false).order('created_at', { ascending: false });
 
   let title = "Collection";
   let description = "Browse our exclusive collection.";
@@ -46,7 +46,7 @@ export default async function CollectionPage({ params, searchParams }: { params:
 
   // Fetch all unique categories from products in this collection for the sidebar filters
   // We'll fetch without the category filter to show all available options
-  let allQuery = supabase.from('products').select('category').order('created_at', { ascending: false });
+  let allQuery = supabase.from('products').select('category').eq('is_archived', false).order('created_at', { ascending: false });
   if (type === 'new-arrivals') allQuery = allQuery.eq('is_new_arrival', true);
   if (type === 'best-sellers') allQuery = allQuery.eq('is_best_seller', true);
   if (type === 'special-editions') allQuery = allQuery.eq('is_special_edition', true);

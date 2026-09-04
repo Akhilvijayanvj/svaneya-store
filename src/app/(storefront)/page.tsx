@@ -15,6 +15,7 @@ export default async function HomePage() {
   const { data: products } = await supabase
     .from('products')
     .select('*')
+    .eq('is_archived', false)
     .order('created_at', { ascending: false })
     .limit(8);
 
@@ -48,6 +49,7 @@ export default async function HomePage() {
       const { data: productData } = await supabase
         .from('products')
         .select('images')
+        .eq('is_archived', false)
         .eq('category', category.name)
         .limit(1)
         .single();
@@ -60,6 +62,7 @@ export default async function HomePage() {
   const { data: newArrivals } = await supabase
     .from('products')
     .select('*')
+    .eq('is_archived', false)
     .eq('is_new_arrival', true)
     .order('created_at', { ascending: false })
     .limit(4);
@@ -67,6 +70,7 @@ export default async function HomePage() {
   const { data: specialEditions } = await supabase
     .from('products')
     .select('*')
+    .eq('is_archived', false)
     .eq('is_special_edition', true)
     .order('created_at', { ascending: false })
     .limit(4);
@@ -74,6 +78,7 @@ export default async function HomePage() {
   const { data: bestSellers } = await supabase
     .from('products')
     .select('*')
+    .eq('is_archived', false)
     .eq('is_best_seller', true)
     .order('created_at', { ascending: false })
     .limit(4);
@@ -142,9 +147,9 @@ export default async function HomePage() {
               <h2 className="text-3xl md:text-4xl font-heading tracking-tight text-slate-900">Shop by Category</h2>
             </div>
             
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+            <div className="flex flex-wrap justify-start gap-6 md:gap-10">
               {categoriesWithImages.map((category) => (
-                <Link key={category.id} href={`/products?category=${encodeURIComponent(category.name)}`} className="group flex flex-col items-center text-center">
+                <Link key={category.id} href={`/products?category=${encodeURIComponent(category.name)}`} className="group flex flex-col items-center text-center w-[120px] md:w-[160px]">
                   <div className="w-full aspect-square rounded-full overflow-hidden bg-[#f5f5f5] mb-4 p-1 border border-transparent group-hover:border-slate-200 transition-colors">
                     <div className="w-full h-full rounded-full overflow-hidden relative">
                       {category.displayImage ? (
@@ -160,7 +165,7 @@ export default async function HomePage() {
                       )}
                     </div>
                   </div>
-                  <h3 className="font-heading text-lg text-slate-900 group-hover:text-slate-500 transition-colors">{category.name}</h3>
+                  <h3 className="font-heading text-base md:text-lg text-slate-900 group-hover:text-slate-500 transition-colors">{category.name}</h3>
                 </Link>
               ))}
             </div>

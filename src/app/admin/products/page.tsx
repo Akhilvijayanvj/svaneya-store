@@ -66,7 +66,10 @@ export default function AdminProductsPage() {
                     <div className="h-10 w-10 bg-slate-200 rounded"></div>
                   )}
                 </TableCell>
-                <TableCell className="font-medium">{product.name}</TableCell>
+                <TableCell className="font-medium">
+                  {product.name}
+                  {product.is_archived && <span className="ml-2 text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded uppercase font-bold tracking-wider">Hidden</span>}
+                </TableCell>
                 <TableCell>{product.category}</TableCell>
                 <TableCell>₹{product.price}</TableCell>
                 <TableCell>{product.stock}</TableCell>

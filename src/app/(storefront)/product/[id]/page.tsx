@@ -19,6 +19,7 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
     .from('products')
     .select('*')
     .eq('id', resolvedParams.id)
+    .eq('is_archived', false)
     .single();
 
   if (!product) {

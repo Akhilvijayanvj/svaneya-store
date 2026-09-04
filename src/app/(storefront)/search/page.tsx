@@ -18,6 +18,7 @@ export default async function SearchPage({
     const { data } = await supabase
       .from('products')
       .select('*')
+      .eq('is_archived', false)
       .or(`name.ilike.%${query}%,description.ilike.%${query}%`)
       .order('created_at', { ascending: false });
       

@@ -13,6 +13,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
   const resolvedParams = use(params);
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
+  const [originalStock, setOriginalStock] = useState<number>(0);
   
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   
@@ -26,6 +27,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
     is_best_seller: false,
     is_new_arrival: false,
     is_special_edition: false,
+    is_archived: false,
     badge_text: '',
     badge_bg: '#0f172a',
     badge_text_color: '#ffffff'
@@ -48,6 +50,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
         .single();
         
       if (data) {
+        setOriginalStock(data.stock || 0);
         setFormData({
           name: data.name || '',
           description: data.description || '',
@@ -58,6 +61,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
           is_best_seller: data.is_best_seller || false,
           is_new_arrival: data.is_new_arrival || false,
           is_special_edition: data.is_special_edition || false,
+          is_archived: data.is_archived || false,
           badge_text: data.badge_text || '',
           badge_bg: data.badge_bg || '#0f172a',
           badge_text_color: data.badge_text_color || '#ffffff'
@@ -97,6 +101,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
         is_best_seller: formData.is_best_seller,
         is_new_arrival: formData.is_new_arrival,
         is_special_edition: formData.is_special_edition,
+        is_archived: formData.is_archived,
         badge_text: formData.badge_text || null,
         badge_bg: formData.badge_bg,
         badge_text_color: formData.badge_text_color
@@ -137,9 +142,21 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
       if (dbError) throw dbError;
       if (!data || data.length === 0) throw new Error("Update failed: You do not have permission to edit this product.");
 
+      // Intelligent Notification Automation: Wishlist Restock
+      if (originalStock === 0 && parseInt(formData.stock) > 0) {
+        try {
+          fetch('/api/cron/restock', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ product_id: resolvedParams.id })
+          }); // Fire and forget so we don't block the UI
+        } catch (e) {
+          console.error("Failed to trigger restock automation", e);
+        }
+      }
+
       alert("Product updated successfully!");
       router.push('/admin/products');
-      
     } catch (error: any) {
       console.error("Error updating product:", error);
       alert(error.message || JSON.stringify(error) || "An error occurred");
@@ -260,6 +277,20 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                 />
                 <label htmlFor="is_special_edition" className="text-sm font-medium leading-none">
                   Special Edition
+                </label>
+              </div>
+              
+              <div className="flex items-center space-x-2 pt-2 border-t mt-4">
+                <input 
+                  type="checkbox" 
+                  id="is_archived" 
+                  name="is_archived"
+                  className="h-4 w-4 rounded border-gray-300 text-slate-900 focus:ring-slate-900"
+                  checked={formData.is_archived}
+                  onChange={handleChange}
+                />
+                <label htmlFor="is_archived" className="text-sm font-medium leading-none text-red-600">
+                  Archive / Hide Product (Will not appear on storefront)
                 </label>
               </div>
             </div>
