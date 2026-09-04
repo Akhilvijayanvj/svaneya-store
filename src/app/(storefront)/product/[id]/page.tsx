@@ -85,20 +85,9 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
 
           {/* Specifications Accordion */}
           <div className="pt-12 border-t border-slate-200">
-            <h2 className="text-2xl font-heading tracking-tight mb-8 text-center">Specifications</h2>
+            <h2 className="text-2xl font-heading tracking-tight mb-8 text-center">Product Details</h2>
             
             <Accordion className="w-full" defaultValue={["description"]}>
-              <AccordionItem value="certifications" className="border-b border-slate-200 py-2">
-                <AccordionTrigger className="text-sm tracking-widest uppercase hover:no-underline hover:text-slate-500 transition-colors">Certifications</AccordionTrigger>
-                <AccordionContent className="text-slate-600 leading-relaxed pt-2">
-                  <ul className="list-disc list-inside space-y-1">
-                    <li>ISO 9001:2015 Certified Manufacturing</li>
-                    <li>SGS Tested Hypoallergenic</li>
-                    <li>100% Lead and Nickel Free</li>
-                  </ul>
-                </AccordionContent>
-              </AccordionItem>
-              
               <AccordionItem value="description" className="border-b border-slate-200 py-2">
                 <AccordionTrigger className="text-sm tracking-widest uppercase hover:no-underline hover:text-slate-500 transition-colors">Product Description</AccordionTrigger>
                 <AccordionContent className="text-slate-600 leading-relaxed pt-2">
@@ -106,29 +95,6 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
                     className="prose prose-sm prose-slate max-w-none prose-p:leading-relaxed prose-headings:font-heading" 
                     dangerouslySetInnerHTML={{ __html: product.description || "No description provided." }} 
                   />
-                </AccordionContent>
-              </AccordionItem>
-              
-              <AccordionItem value="features" className="border-b border-slate-200 py-2">
-                <AccordionTrigger className="text-sm tracking-widest uppercase hover:no-underline hover:text-slate-500 transition-colors">Features</AccordionTrigger>
-                <AccordionContent className="text-slate-600 leading-relaxed pt-2">
-                  <div className="grid grid-cols-[120px_1fr] gap-4 text-sm">
-                    <span className="font-medium text-slate-900">Material</span>
-                    <span>316L Surgical Stainless Steel</span>
-                    
-                    <span className="font-medium text-slate-900">Finish</span>
-                    <span>18K PVD Gold Plating / High Polish Silver</span>
-                    
-                    <span className="font-medium text-slate-900">Durability</span>
-                    <span>Waterproof, Sweatproof, Anti-Tarnish</span>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-              
-              <AccordionItem value="shipping" className="border-b border-slate-200 py-2">
-                <AccordionTrigger className="text-sm tracking-widest uppercase hover:no-underline hover:text-slate-500 transition-colors">Shipping & Returns</AccordionTrigger>
-                <AccordionContent className="text-slate-600 leading-relaxed pt-2 text-sm">
-                  Orders are processed within 24 hours. Free standard shipping on orders over ₹999. If you are not completely satisfied, we offer a 14-day return policy for a full refund or exchange.
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
