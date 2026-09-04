@@ -8,6 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useSearchParams } from 'next/navigation'
 import { Suspense, useState } from 'react';
 
+import { Eye, EyeOff } from 'lucide-react';
+
 function LoginForms() {
   const searchParams = useSearchParams();
   const error = searchParams.get('error');
@@ -15,16 +17,17 @@ function LoginForms() {
   const intent = searchParams.get('intent') === 'track' ? 'register' : 'login';
 
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <Tabs defaultValue={intent} className="w-full">
-      <TabsList className="grid w-full grid-cols-2 mb-8">
+      <TabsList className="grid w-full grid-cols-2 mb-6">
         <TabsTrigger value="login">Login</TabsTrigger>
-        <TabsTrigger value="register">Create Account</TabsTrigger>
+        <TabsTrigger value="register">Register</TabsTrigger>
       </TabsList>
       
       {error && (
-        <div className="bg-red-50 text-red-600 p-3 rounded-md text-sm mb-4 border border-red-100">
+        <div className="bg-red-50 text-red-500 text-sm p-3 rounded-md mb-4 text-center">
           {error}
         </div>
       )}
@@ -37,7 +40,12 @@ function LoginForms() {
           </div>
           <div className="grid gap-2">
             <Label htmlFor="password">Password</Label>
-            <Input id="password" name="password" type="password" required />
+            <div className="relative">
+              <Input id="password" name="password" type={showPassword ? "text" : "password"} required className="pr-10" />
+              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </div>
           </div>
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Logging in..." : "Login"}
@@ -53,7 +61,12 @@ function LoginForms() {
           </div>
           <div className="grid gap-2">
             <Label htmlFor="reg-password">Choose a Password</Label>
-            <Input id="reg-password" name="password" type="password" required minLength={6} />
+            <div className="relative">
+              <Input id="reg-password" name="password" type={showPassword ? "text" : "password"} required minLength={6} className="pr-10" />
+              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </div>
             <p className="text-xs text-muted-foreground">Must be at least 6 characters long.</p>
           </div>
           <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700" disabled={loading}>
