@@ -62,15 +62,28 @@ export function AddToCartButton({ product }: { product: any }) {
             {product.color_heading || 'Color'}
           </h3>
           <div className="flex flex-wrap gap-3">
-            {product.colors.map((c: string) => (
-              <button
-                key={c}
-                onClick={() => setSelectedColor(c)}
-                className={`px-5 py-2.5 border text-sm transition-all rounded-sm ${selectedColor === c ? 'border-black bg-black text-white font-medium shadow-md' : 'border-slate-200 bg-white text-slate-800 hover:border-slate-400'}`}
-              >
-                {c}
-              </button>
-            ))}
+            {product.colors.map((c: string) => {
+              // Try to map the color string to a valid CSS color (e.g. "Rose Gold" -> "rosegold")
+              const cssColor = c.toLowerCase().replace(/[^a-z]/g, '');
+              
+              return (
+                <button
+                  key={c}
+                  onClick={() => setSelectedColor(c)}
+                  className={`flex items-center gap-2 px-4 py-2 border text-sm transition-all rounded-sm ${
+                    selectedColor === c 
+                      ? 'border-black bg-slate-50 font-medium shadow-sm ring-1 ring-black' 
+                      : 'border-slate-200 bg-white text-slate-800 hover:border-slate-300'
+                  }`}
+                >
+                  <span 
+                    className="w-4 h-4 rounded-full border border-black/10 shadow-inner block"
+                    style={{ backgroundColor: cssColor }}
+                  />
+                  {c}
+                </button>
+              );
+            })}
           </div>
         </div>
       )}
