@@ -8,27 +8,33 @@ export interface CartItem {
   image: string;
   quantity: number;
   stock: number;
+  selected_color?: string | null;
+  color_heading?: string | null;
+  cartItemId?: string;
 }
 
 interface CartState {
   items: CartItem[];
   addItem: (item: CartItem) => void;
-  removeItem: (id: string) => void;
-  updateQuantity: (id: string, quantity: number) => void;
+  removeItem: (cartItemIdOrId: string) => void;
+  updateQuantity: (cartItemIdOrId: string, quantity: number) => void;
   clearCart: () => void;
   getTotal: () => number;
 }
+
+const getCartItemId = (item: CartItem) => item.selected_color ? `${item.id}_${item.selected_color}` : item.id;
 
 export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
       items: [],
       addItem: (item) => set((state) => {
-        const existingItem = state.items.find((i) => i.id === item.id);
+        const cartItemId = getCartItemId(item);
+        const existingItem = state.items.find((i) => (i.cartItemId || getCartItemId(i)) === cartItemId);
         if (existingItem) {
           return {
             items: state.items.map((i) => {
-              if (i.id === item.id) {
+              if ((i.cartItemId || getCartItemId(i)) === cartItemId) {
                 const stock = item.stock ?? i.stock ?? 99;
                 return { ...i, stock, quantity: Math.min(stock, i.quantity + item.quantity) };
               }
@@ -36,14 +42,15 @@ export const useCartStore = create<CartState>()(
             }),
           };
         }
-        return { items: [...state.items, item] };
+        return { items: [...state.items, { ...item, cartItemId }] };
       }),
-      removeItem: (id) => set((state) => ({
-        items: state.items.filter((i) => i.id !== id),
+      removeItem: (cartItemIdOrId) => set((state) => ({
+        items: state.items.filter((i) => (i.cartItemId || getCartItemId(i)) !== cartItemIdOrId && i.id !== cartItemIdOrId),
       })),
-      updateQuantity: (id, quantity) =>
+      updateQuantity: (cartItemIdOrId, quantity) =>
         set((state) => ({
-          items: state.items.map((i) => (i.id === id ? { ...i, quantity: Number.isNaN(quantity) || quantity <= 0 ? 1 : quantity } : i)),
+          items: state.items.map((i) => ((i.cartItemId || getCartItemId(i)) === cartItemIdOrId || i.id === cartItemIdOrId ? { ...i, quantity: Number.isNaN(quantity) || quantity <= 0 ? 1 : quantity } : i)),
+
         })),
       clearCart: () => set({ items: [] }),
       getTotal: () => {

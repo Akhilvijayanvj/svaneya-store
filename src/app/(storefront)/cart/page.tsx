@@ -41,20 +41,27 @@ export default function CartPage() {
                 </div>
                 <div className="flex-1 flex flex-col justify-between">
                     <div className="flex justify-between items-start">
-                    <h3 className="font-semibold">{item.name}</h3>
+                    <div>
+                      <h3 className="font-semibold">{item.name}</h3>
+                      {(item as any).selected_color && (
+                        <p className="text-sm text-slate-500 mt-1">
+                          {(item as any).color_heading || 'Color'}: {(item as any).selected_color}
+                        </p>
+                      )}
+                    </div>
                     <p className="font-bold">₹{item.price * (item.quantity || 1)}</p>
                   </div>
                   <div className="flex items-center justify-between mt-auto">
                     <div className="flex items-center border rounded-md">
-                      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => updateQuantity(item.id, Math.max(1, (item.quantity || 1) - 1))}>
+                      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => updateQuantity((item as any).cartItemId || item.id, Math.max(1, (item.quantity || 1) - 1))}>
                         <Minus className="h-3 w-3" />
                       </Button>
                       <span className="w-8 text-center text-sm">{item.quantity || 1}</span>
-                      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => updateQuantity(item.id, Math.min(item.stock || 99, (item.quantity || 1) + 1))} disabled={(item.quantity || 1) >= (item.stock || 99)}>
+                      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => updateQuantity((item as any).cartItemId || item.id, Math.min(item.stock || 99, (item.quantity || 1) + 1))} disabled={(item.quantity || 1) >= (item.stock || 99)}>
                         <Plus className="h-3 w-3" />
                       </Button>
                     </div>
-                    <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" onClick={() => removeItem(item.id)}>
+                    <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" onClick={() => removeItem((item as any).cartItemId || item.id)}>
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>
