@@ -70,17 +70,19 @@ export function AddToCartButton({ product }: { product: any }) {
                 <button
                   key={c}
                   onClick={() => setSelectedColor(c)}
-                  className={`flex items-center gap-2 px-4 py-2 border text-sm transition-all rounded-sm ${
+                  className={`group flex items-center gap-3 px-5 py-3 border transition-all rounded-none ${
                     selectedColor === c 
-                      ? 'border-black bg-slate-50 font-medium shadow-sm ring-1 ring-black' 
-                      : 'border-slate-200 bg-white text-slate-800 hover:border-slate-300'
+                      ? 'border-black text-black shadow-sm' 
+                      : 'border-slate-200 text-slate-500 hover:border-slate-400 hover:text-black'
                   }`}
                 >
                   <span 
-                    className="w-4 h-4 rounded-full border border-black/10 shadow-inner block"
+                    className="w-4 h-4 rounded-full border border-black/10 shadow-inner block transition-transform group-hover:scale-110"
                     style={{ backgroundColor: cssColor }}
                   />
-                  {c}
+                  <span className={`text-sm tracking-wide ${selectedColor === c ? 'font-medium' : 'font-normal'}`}>
+                    {c}
+                  </span>
                 </button>
               );
             })}
