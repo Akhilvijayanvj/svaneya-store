@@ -26,8 +26,13 @@ export default function AddProductPage() {
     is_archived: false,
     badge_text: '',
     badge_bg: '#0f172a',
-    badge_text_color: '#ffffff'
+    badge_text_color: '#ffffff',
+    has_colors: false,
+    color_heading: 'Color',
+    colors: [] as string[]
   });
+
+  const [colorInput, setColorInput] = useState('');
 
   const [categories, setCategories] = useState<any[]>([]);
 
@@ -102,7 +107,10 @@ export default function AddProductPage() {
           is_archived: formData.is_archived,
           badge_text: formData.badge_text || null,
           badge_bg: formData.badge_bg,
-          badge_text_color: formData.badge_text_color
+          badge_text_color: formData.badge_text_color,
+          has_colors: formData.has_colors,
+          color_heading: formData.color_heading,
+          colors: formData.colors
         }
       ]);
 
@@ -189,6 +197,85 @@ export default function AddProductPage() {
               <Label htmlFor="image">Product Images</Label>
               <Input id="image" name="image" type="file" accept="image/*" multiple onChange={handleImageChange} />
               <p className="text-xs text-muted-foreground">You can select multiple images at once.</p>
+            </div>
+
+            {/* Colors Section */}
+            <div className="p-4 border border-slate-200 rounded-md bg-slate-50 space-y-4">
+              <div className="flex items-center space-x-2">
+                <input 
+                  type="checkbox" 
+                  id="has_colors" 
+                  name="has_colors"
+                  className="h-4 w-4 rounded border-gray-300 text-slate-900 focus:ring-slate-900"
+                  checked={formData.has_colors}
+                  onChange={handleChange}
+                />
+                <label htmlFor="has_colors" className="font-semibold leading-none">
+                  Enable Colors (Allow customers to choose colors)
+                </label>
+              </div>
+
+              {formData.has_colors && (
+                <div className="pl-6 space-y-4 pt-2 border-t border-slate-200">
+                  <div className="space-y-2">
+                    <Label htmlFor="color_heading">Color Section Heading</Label>
+                    <Input 
+                      id="color_heading" 
+                      name="color_heading" 
+                      value={formData.color_heading} 
+                      onChange={handleChange} 
+                      placeholder="e.g. Color of the stone" 
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label>Add Colors</Label>
+                    <div className="flex gap-2">
+                      <Input 
+                        value={colorInput} 
+                        onChange={(e) => setColorInput(e.target.value)} 
+                        placeholder="e.g. Red, Blue, Gold..." 
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            if (colorInput.trim() && !formData.colors.includes(colorInput.trim())) {
+                              setFormData(prev => ({ ...prev, colors: [...prev.colors, colorInput.trim()] }));
+                              setColorInput('');
+                            }
+                          }
+                        }}
+                      />
+                      <Button 
+                        type="button" 
+                        variant="secondary"
+                        onClick={() => {
+                          if (colorInput.trim() && !formData.colors.includes(colorInput.trim())) {
+                            setFormData(prev => ({ ...prev, colors: [...prev.colors, colorInput.trim()] }));
+                            setColorInput('');
+                          }
+                        }}
+                      >
+                        Add
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    {formData.colors.map((c, idx) => (
+                      <div key={idx} className="flex items-center gap-1 bg-white border border-slate-200 px-3 py-1 rounded-md text-sm shadow-sm">
+                        <span>{c}</span>
+                        <button 
+                          type="button" 
+                          className="text-slate-400 hover:text-red-500 ml-1"
+                          onClick={() => setFormData(prev => ({ ...prev, colors: prev.colors.filter(color => color !== c) }))}
+                        >
+                          &times;
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 py-4 border-y border-slate-100">
