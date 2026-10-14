@@ -2,7 +2,7 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Package, Truck, LogOut } from 'lucide-react';
+import { Package, Truck, LogOut, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import { OrderActions } from './order-actions';
 
@@ -120,6 +120,28 @@ export default async function AccountPage() {
                   </div>
                   
                   <div className="p-4 space-y-4 bg-white">
+                    {order.tracking_id && (
+                      <div className="bg-slate-900 text-white p-3.5 rounded-lg flex flex-wrap justify-between items-center gap-3">
+                        <div className="flex items-center gap-3">
+                          <div className="h-8 w-8 rounded-full bg-[#BFFF07] flex items-center justify-center text-slate-950">
+                            <Truck className="h-4 w-4" />
+                          </div>
+                          <div>
+                            <p className="text-xs text-slate-400">Shipped via {order.courier_name || 'India Post'}</p>
+                            <p className="font-mono text-sm font-bold text-[#BFFF07] tracking-wider">{order.tracking_id}</p>
+                          </div>
+                        </div>
+                        <a
+                          href={`https://shipway.in/indiapost/${order.tracking_id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center text-xs font-semibold px-3 py-1.5 bg-[#BFFF07] text-slate-950 rounded hover:bg-[#a6de06] transition-colors"
+                        >
+                          <ExternalLink className="h-3.5 w-3.5 mr-1.5" /> Track with India Post
+                        </a>
+                      </div>
+                    )}
+                    
                     {order.order_items.map((item: any, idx: number) => (
                       <div key={idx} className="flex gap-4">
                         <div className="h-16 w-16 bg-slate-100 rounded overflow-hidden flex-shrink-0">
